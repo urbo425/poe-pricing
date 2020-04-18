@@ -1,15 +1,81 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject IJSRuntime Js
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<MatAnchorUtils></MatAnchorUtils>
+<MatAppBar Style="z-index: 100;" Class="mat">
+    <MatAppBarRow>
+        <MatAppBarSection>
+            <MatIconButton Icon="menu" OnClick="@((e) => MenuButtonClicked())"></MatIconButton>
+            <MatAppBarTitle>PoE Pricing</MatAppBarTitle>
+        </MatAppBarSection>
+    </MatAppBarRow>
+</MatAppBar>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+<MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="mat">
 
-    <div class="content px-4">
+    <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up" HiddenChanged="@ModelDrawerHiddenChanged">
+        <ChildContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Modal">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <MatNavMenu>
+                    <MatNavItem Href="/"><MatIcon Icon="home"></MatIcon>&nbsp; Home</MatNavItem>
+                    <MatNavItem Href="/stashtabs"><MatIcon Icon="view_list"></MatIcon>&nbsp; Stash Tabs</MatNavItem>
+                </MatNavMenu>
+            </MatDrawer>
+        </ChildContent>
+        <ElseContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Dismissible">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <MatNavMenu>
+                    <MatNavItem Href="/"><MatIcon Icon="home"></MatIcon>&nbsp; Home</MatNavItem>
+                    <MatNavItem Href="/stashtabs"><MatIcon Icon="view_list"></MatIcon>&nbsp; Stash Tabs</MatNavItem>
+                </MatNavMenu>
+            </MatDrawer>
+        </ElseContent>
+    </MatHidden>
+
+
+    <MatDrawerContent Style="padding: 25px;">
+        <MatAppBarAdjust></MatAppBarAdjust>
         @Body
-    </div>
-</div>
+    </MatDrawerContent>
+
+</MatDrawerContainer>
+
+
+@code {
+
+
+    protected void ModelDrawerHiddenChanged(bool hidden)
+    {
+        if (!hidden)
+        {
+            _navMenuOpened = false;
+        }
+    }
+
+    bool _navMenuOpened = true;
+
+    void MenuButtonClicked()
+    {
+        _navMenuOpened = !_navMenuOpened;
+        this.StateHasChanged();
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public void Dispose()
+    {
+    }
+
+}

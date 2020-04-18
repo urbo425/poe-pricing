@@ -55,12 +55,36 @@
 
 @if (StashTabItemsResponse != null)
 {
-    <MatList>
-        @foreach (var item in StashTabItemsResponse.Items)
-        {
-            <MatListItem>@item.Name</MatListItem>
-        }
-    </MatList>
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-inner">
+            @foreach (var item in StashTabItemsResponse.Items)
+            {
+                <div class="mat-layout-grid-cell">
+                    <MatCard class="stash-tabs_item-card">
+                        <div class="stash-tabs_item-card-content">
+                            <MatHeadline6 class="stash-tabs_item-card-clean-margin">
+                                @item.Name
+                            </MatHeadline6>
+                            <MatSubtitle2 class="stash-tabs_item-card-clean-margin">
+                                by Kurt Wagner
+                            </MatSubtitle2>
+                        </div>
+                        <MatCardContent>
+                            <MatCardMedia Wide="true" Square="false" ImageUrl="@item.Icon"></MatCardMedia>
+                            <MatBody2 class="stash-tabs_item-card-content stash-tabs_item-card-clean-margin">
+                                Visit ten places on our planet that are undergoing the biggest changes today.
+                            </MatBody2>
+                        </MatCardContent>
+                        <MatCardActions>
+                            <MatCardActionButtons>
+                                <MatButton>Price</MatButton>
+                            </MatCardActionButtons>
+                        </MatCardActions>
+                    </MatCard>
+                </div>
+            }
+        </div>
+    </div>
 }
 
 @code {
@@ -115,3 +139,4 @@
     }
 
 }
+

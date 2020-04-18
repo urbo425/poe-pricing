@@ -19,10 +19,10 @@ namespace PoePricing.PoeModels
         //
         // [JsonPropertyName("h")]
         // public int Height { get; set; }
-        //
-        // [JsonPropertyName("icon")]
-        // public string Icon { get; set; }
-        //
+        
+        [JsonPropertyName("icon")]
+        public string Icon { get; set; }
+        
         // [JsonPropertyName("league")]
         // public string League { get; set; }
         //
