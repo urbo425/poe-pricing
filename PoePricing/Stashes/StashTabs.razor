@@ -2,41 +2,54 @@
 @using MediatR
 @inject IMediator Mediator
 
-<h3>Stash Tabs</h3>
+<div class="mat-elevation-z5 stash-tabs__get-form-wrapper">
+    <h3>Enter the info below to get a list of your stash tabs</h3>
 
-<EditForm Model="@_request" OnValidSubmit="GetStashes" class="col-3">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="@_getStashRequest" OnValidSubmit="GetStashes">
+        <DataAnnotationsValidator/>
 
-    <div class="form-group">
-        <label for="accountName">Account Name</label>
-        <InputText class="form-control" id="accountName" @bind-Value="_request.AccountName"></InputText>
-    </div>
+        <p>
+            <MatTextField Label="Account Name" @bind-Value="_getStashRequest.AccountName"></MatTextField>
+            <ValidationMessage For="@(() => _getStashRequest.AccountName)"/>
+        </p>
 
-    <div class="form-group">
-        <label for="sessionId">PoE Session ID</label>
-        <InputText class="form-control" id="sessionId" @bind-Value="_request.PoeSessionId"></InputText>
-    </div>
+        <p>
+            <MatTextField Label="PoE Session ID" @bind-Value="_getStashRequest.PoeSessionId"></MatTextField>
+            <ValidationMessage For="@(() => _getStashRequest.PoeSessionId)"/>
+        </p>
 
-    @if (LoadingStashes)
-    {
-        <button class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Getting Stashes...
-        </button>
-    }
-    else
-    {
-        <button class="btn btn-primary" type="submit">Get Stashes</button>
-    }
-</EditForm>
+        @if (LoadingStashes)
+        {
+            <MatButton Type="submit" Raised="true" Disabled="true">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Getting Stashes...
+            </MatButton>
+        }
+        else
+        {
+            <MatButton Type="submit" Raised="true">Get Stashes</MatButton>
+        }
+    </EditForm>
+</div>
 
 @if (StashTabsResponse != null)
 {
-    @foreach (var tab in StashTabsResponse.Tabs)
-    {
-        <p>@tab.Name</p>
-    }
+    <div class="mat-elevation-z5 stash-tabs__tab-form-wrapper">
+        <EditForm Model="@_getStashTabItemsRequest" OnValidSubmit="GetStashItems">
+            <DataAnnotationsValidator/>
+
+            <p>
+                <MatSelect Label="Select A Stash Tab..." @bind-Value="tabIndex">
+                    <MatOptionString></MatOptionString>
+                    @foreach (var tab in StashTabsResponse.Tabs)
+                    {
+                        <MatOptionString Value="@tab.Index.ToString()">@tab.Name</MatOptionString>
+                    }
+                </MatSelect>
+            </p>
+            <MatButton Type="submit" Raised="true" Disabled="@string.IsNullOrEmpty(tabIndex)">Get Stash Items</MatButton>
+        </EditForm>
+    </div>
 }
 
 @code {
@@ -44,7 +57,11 @@
 
     private GetStashTabs.Response StashTabsResponse { get; set; }
 
-    private readonly GetStashTabs.Request _request = new GetStashTabs.Request();
+    private readonly GetStashTabs.Request _getStashRequest = new GetStashTabs.Request();
+
+    private readonly GetStashTabItems.Request _getStashTabItemsRequest = new GetStashTabItems.Request();
+
+    string tabIndex;
 
     async void GetStashes()
     {
@@ -52,7 +69,7 @@
 
         try
         {
-            StashTabsResponse = await Mediator.Send(_request);
+            StashTabsResponse = await Mediator.Send(_getStashRequest);
         }
         catch
         {
@@ -61,6 +78,10 @@
 
         LoadingStashes = false;
         StateHasChanged();
+    }
+
+    async void GetStashItems()
+    {
     }
 
 }
