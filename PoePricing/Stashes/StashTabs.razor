@@ -63,18 +63,12 @@
                     <MatCard class="stash-tabs_item-card">
                         <div class="stash-tabs_item-card-content">
                             <MatHeadline6 class="stash-tabs_item-card-clean-margin">
-                                @item.Name
+                                <p>@item.Name</p>
+                                <p>@item.TypeLine</p>
                             </MatHeadline6>
-                            <MatSubtitle2 class="stash-tabs_item-card-clean-margin">
-                                by Kurt Wagner
-                            </MatSubtitle2>
+                            
+                            <img src="@item.Icon" alt="Item Image" />
                         </div>
-                        <MatCardContent>
-                            <MatCardMedia Wide="true" Square="false" ImageUrl="@item.Icon"></MatCardMedia>
-                            <MatBody2 class="stash-tabs_item-card-content stash-tabs_item-card-clean-margin">
-                                Visit ten places on our planet that are undergoing the biggest changes today.
-                            </MatBody2>
-                        </MatCardContent>
                         <MatCardActions>
                             <MatCardActionButtons>
                                 <MatButton>Price</MatButton>

@@ -100,6 +100,35 @@ namespace PoePricing.Tests.Stashes
             response.Should().BeEquivalentTo(expectedResponse);
         }
 
+        [Fact]
+        public async Task ShouldConvertTypeLineProperty()
+        {
+
+            var service = Substitute.For<IPoeApiService>();
+
+            var request = new GetStashTabItems.Request
+            {
+                AccountName = "SomeAccountName",
+                PoeSessionId = "someId",
+                TabIndex = "1"
+            };
+            var expectedResponse = new GetStashTabItems.Response
+            {
+                Items = new List<Item>
+                {
+                    new Item
+                    {
+                        TypeLine = "some type line"
+                    }
+                }
+            };
+            service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
+
+            var sut = new GetStashTabItems.Handler(service);
+            var response = await sut.Handle(request);
+            response.Should().BeEquivalentTo(expectedResponse);
+        }
+
         private HttpResponseMessage CreateGetStashTabItemsHttpResponseMessage(GetStashTabItems.Response expectedResponse)
         {
             var jsonString = JsonSerializer.Serialize(expectedResponse);

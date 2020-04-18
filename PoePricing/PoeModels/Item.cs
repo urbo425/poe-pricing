@@ -11,9 +11,9 @@ namespace PoePricing.PoeModels
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        // [JsonPropertyName("typeLine")]
-        // public string TypeLine { get; set; }
-        //
+        [JsonPropertyName("typeLine")]
+        public string TypeLine { get; set; }
+        
         // [JsonPropertyName("w")]
         // public int Width { get; set; }
         //
