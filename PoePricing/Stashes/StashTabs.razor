@@ -1,6 +1,7 @@
 ﻿@page "/stashtabs"
 @using MediatR
 @inject IMediator Mediator
+@inject IMatToaster Toaster
 
 <div class="mat-elevation-z5 stash-tabs__get-form-wrapper">
     <h3>Enter the info below to get a list of your stash tabs</h3>
@@ -45,7 +46,6 @@
                     {
                         <MatOptionString Value="@tab.Index.ToString()">@tab.Name</MatOptionString>
                     }
-                    /**/
                 </MatSelect>
             </p>
             <MatButton Type="submit" Raised="true" Disabled="@string.IsNullOrEmpty(_getStashTabItemsRequest.TabIndex)">Get Stash Items</MatButton>
@@ -84,8 +84,9 @@
         {
             StashTabsResponse = await Mediator.Send(_getStashRequest);
         }
-        catch
+        catch (Exception e)
         {
+            ShowToastError(e);
             LoadingStashes = false;
         }
 
@@ -101,10 +102,16 @@
             _getStashTabItemsRequest.PoeSessionId = _getStashRequest.PoeSessionId;
             StashTabItemsResponse = await Mediator.Send(_getStashTabItemsRequest);
         }
-        catch
+        catch (Exception e)
         {
+            ShowToastError(e);
         }
         StateHasChanged();
+    }
+
+    public void ShowToastError(Exception e)
+    {
+        Toaster.Add(e.Message, MatToastType.Danger, "Something Went Wrong");
     }
 
 }
