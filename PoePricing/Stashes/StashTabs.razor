@@ -1,15 +1,21 @@
 ﻿@page "/stashtabs"
-@using PoePricing.Models
+@using MediatR
+@inject IMediator Mediator
 
 <h3>Stash Tabs</h3>
 
-<EditForm Model="@_userModel" OnValidSubmit="GetStashes" class="col-3">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
+<EditForm Model="@_request" OnValidSubmit="GetStashes" class="col-3">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="accountName">Account Name</label>
+        <InputText class="form-control" id="accountName" @bind-Value="_request.AccountName"></InputText>
+    </div>
 
     <div class="form-group">
         <label for="sessionId">PoE Session ID</label>
-        <InputText class="form-control" id="sessionId" @bind-Value="_userModel.PoeSessionId"></InputText>
+        <InputText class="form-control" id="sessionId" @bind-Value="_request.PoeSessionId"></InputText>
     </div>
 
     @if (LoadingStashes)
@@ -23,19 +29,38 @@
     {
         <button class="btn btn-primary" type="submit">Get Stashes</button>
     }
-
 </EditForm>
+
+@if (StashTabsResponse != null)
+{
+    @foreach (var tab in StashTabsResponse.Tabs)
+    {
+        <p>@tab.Name</p>
+    }
+}
 
 @code {
     private bool LoadingStashes { get; set; }
 
-    private readonly UserModel _userModel = new UserModel();
+    private GetStashTabs.Response StashTabsResponse { get; set; }
 
-    void GetStashes()
+    private readonly GetStashTabs.Request _request = new GetStashTabs.Request();
+
+    async void GetStashes()
     {
         LoadingStashes = true;
 
-        Console.WriteLine("I did it!");
+        try
+        {
+            StashTabsResponse = await Mediator.Send(_request);
+        }
+        catch
+        {
+            LoadingStashes = false;
+        }
+
+        LoadingStashes = false;
+        StateHasChanged();
     }
 
 }

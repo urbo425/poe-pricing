@@ -1,22 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using PoePricing.Stashes;
 
 namespace PoePricing.Services
 {
-    public class PoeApiService
+    public class PoeApiService : IPoeApiService
     {
-        public readonly HttpClient client;
+        private readonly Uri _baseAddress;
 
-        public PoeApiService(HttpClient client)
+        public PoeApiService()
         {
-            this.client = client;
+            _baseAddress = new Uri("https://www.pathofexile.com/character-window/");
         }
 
-        
+        public async Task<HttpResponseMessage> GetStashTabs(GetStashTabs.Request request)
+        {
+            var cookieContainer = new CookieContainer();
+            using var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
+            using var client = new HttpClient(handler) { BaseAddress = _baseAddress };
+            cookieContainer.Add(_baseAddress, new Cookie("POESESSID", request.PoeSessionId));
+
+            var response = await client.GetAsync($"get-stash-items?accountName={request.AccountName}&league=Delirium&tabs=1");
+
+            return response;
+        }
     }
 
-    interface IPoeApiService
+    public interface IPoeApiService
     {
-        
+        Task<HttpResponseMessage> GetStashTabs(GetStashTabs.Request request);
     }
 }
