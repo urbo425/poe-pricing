@@ -44,16 +44,7 @@ namespace PoePricing.Tests.Stashes
                 PoeSessionId = "someId",
                 TabIndex = "1"
             };
-            var expectedResponse = new GetStashTabItems.Response
-            {
-                Items = new List<Item>
-                {
-                    new Item
-                    {
-                        Name = "some name"
-                    }
-                }
-            };
+            var expectedResponse = CreateGetStashTabItemsResponse(name: "toad");
             service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
 
             var sut = new GetStashTabItems.Handler(service);
@@ -74,7 +65,6 @@ namespace PoePricing.Tests.Stashes
         [Fact]
         public async Task ShouldConvertIconProperty()
         {
-
             var service = Substitute.For<IPoeApiService>();
 
             var request = new GetStashTabItems.Request
@@ -83,16 +73,7 @@ namespace PoePricing.Tests.Stashes
                 PoeSessionId = "someId",
                 TabIndex = "1"
             };
-            var expectedResponse = new GetStashTabItems.Response
-            {
-                Items = new List<Item>
-                {
-                    new Item
-                    {
-                        Icon = "some icon url"
-                    }
-                }
-            };
+            var expectedResponse = CreateGetStashTabItemsResponse(icon: "img.someImage");
             service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
 
             var sut = new GetStashTabItems.Handler(service);
@@ -112,16 +93,55 @@ namespace PoePricing.Tests.Stashes
                 PoeSessionId = "someId",
                 TabIndex = "1"
             };
-            var expectedResponse = new GetStashTabItems.Response
+            var expectedResponse = CreateGetStashTabItemsResponse(typeLine: "type line");
+            service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
+
+            var sut = new GetStashTabItems.Handler(service);
+            var response = await sut.Handle(request);
+            response.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Fact]
+        public async Task ShouldConvertImplicitProperty()
+        {
+            var service = Substitute.For<IPoeApiService>();
+
+            var request = new GetStashTabItems.Request
             {
-                Items = new List<Item>
-                {
-                    new Item
-                    {
-                        TypeLine = "some type line"
-                    }
-                }
+                AccountName = "SomeAccountName",
+                PoeSessionId = "someId",
+                TabIndex = "1"
             };
+            var implicitMods = new List<string>
+            {
+                "mod1",
+                "mod2"
+            };
+            var expectedResponse = CreateGetStashTabItemsResponse(implicitMods: implicitMods);
+            service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
+
+            var sut = new GetStashTabItems.Handler(service);
+            var response = await sut.Handle(request);
+            response.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [Fact]
+        public async Task ShouldConvertExplicitProperty()
+        {
+            var service = Substitute.For<IPoeApiService>();
+
+            var request = new GetStashTabItems.Request
+            {
+                AccountName = "SomeAccountName",
+                PoeSessionId = "someId",
+                TabIndex = "1"
+            };
+            var explicitMods = new List<string>
+            {
+                "mod1",
+                "mod2"
+            };
+            var expectedResponse = CreateGetStashTabItemsResponse(explicitMods: explicitMods);
             service.GetStashTabItems(request).Returns(CreateGetStashTabItemsHttpResponseMessage(expectedResponse));
 
             var sut = new GetStashTabItems.Handler(service);
@@ -138,7 +158,8 @@ namespace PoePricing.Tests.Stashes
                 Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
             };
         }
-        private static GetStashTabItems.Response CreateGetStashTabItemsResponse()
+        private static GetStashTabItems.Response CreateGetStashTabItemsResponse(string name = "some name", string icon = "icon url",
+            string typeLine = "some type line", List<string> implicitMods = null, List<string> explicitMods = null)
         {
             return new GetStashTabItems.Response
             {
@@ -146,21 +167,14 @@ namespace PoePricing.Tests.Stashes
                 {
                     new Item
                     {
-                        Name = "some name",
+                        Name = name,
+                        Icon = icon,
+                        TypeLine = typeLine,
+                        ImplicitMods = implicitMods,
+                        ExplicitMods = explicitMods,
                         // Id = "some id",
-                        // ImplicitMods = new List<string>
-                        // {
-                        //     "mod1",
-                        //     "mod2"
-                        // },
-                        // ExplicitMods = new List<string>
-                        // {
-                        //     "mod1",
-                        //     "mod2"
-                        // },
                         // Height = 1,
                         // Width = 1,
-                        // Icon = "some icon",
                         // Identified = true,
                         // ItemLevel = 75,
                         // ItemSockets = new List<ItemSocket>
@@ -173,7 +187,6 @@ namespace PoePricing.Tests.Stashes
                         //     }
                         // },
                         // League = "some league",
-                        // TypeLine = "some type line",
                         // Properties = new List<ItemProperty>
                         // {
                         //     new ItemProperty

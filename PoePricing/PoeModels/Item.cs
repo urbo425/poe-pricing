@@ -13,16 +13,22 @@ namespace PoePricing.PoeModels
 
         [JsonPropertyName("typeLine")]
         public string TypeLine { get; set; }
-        
+
+        [JsonPropertyName("icon")]
+        public string Icon { get; set; }
+
+        [JsonPropertyName("implicitMods")] 
+        public List<string> ImplicitMods { get; set; } = new List<string>();
+
+        [JsonPropertyName("explicitMods")]
+        public List<string> ExplicitMods { get; set; } = new List<string>();
+
         // [JsonPropertyName("w")]
         // public int Width { get; set; }
         //
         // [JsonPropertyName("h")]
         // public int Height { get; set; }
-        
-        [JsonPropertyName("icon")]
-        public string Icon { get; set; }
-        
+
         // [JsonPropertyName("league")]
         // public string League { get; set; }
         //

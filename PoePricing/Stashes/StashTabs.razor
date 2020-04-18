@@ -66,8 +66,25 @@
                                 <p>@item.Name</p>
                                 <p>@item.TypeLine</p>
                             </MatHeadline6>
-                            
-                            <img src="@item.Icon" alt="Item Image" />
+
+                            <img src="@item.Icon" alt="Item Image" class="stash-tabs__item-card-icon" />
+
+                            @if (item.ImplicitMods.Count > 0)
+                            {
+                                <MatDivider></MatDivider>
+                            }
+
+                            @foreach (var implicitMod in item.ImplicitMods)
+                            {
+                                <p>@implicitMod</p>
+                            }
+
+                            <MatDivider></MatDivider>
+
+                            @foreach (var explicitMod in item.ExplicitMods)
+                            {
+                                <p>@explicitMod</p>
+                            }
                         </div>
                         <MatCardActions>
                             <MatCardActionButtons>
