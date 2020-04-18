@@ -1,0 +1,41 @@
+﻿@page "/stashtabs"
+@using PoePricing.Models
+
+<h3>Stash Tabs</h3>
+
+<EditForm Model="@_userModel" OnValidSubmit="GetStashes" class="col-3">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label for="sessionId">PoE Session ID</label>
+        <InputText class="form-control" id="sessionId" @bind-Value="_userModel.PoeSessionId"></InputText>
+    </div>
+
+    @if (LoadingStashes)
+    {
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Getting Stashes...
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-primary" type="submit">Get Stashes</button>
+    }
+
+</EditForm>
+
+@code {
+    private bool LoadingStashes { get; set; }
+
+    private readonly UserModel _userModel = new UserModel();
+
+    void GetStashes()
+    {
+        LoadingStashes = true;
+
+        Console.WriteLine("I did it!");
+    }
+
+}

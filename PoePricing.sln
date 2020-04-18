@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoePricing", "PoePricing\PoePricing.csproj", "{CFE52326-B360-4616-8618-EF57F5CB6E66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{85AE915A-B50B-4F42-A30B-504128953155}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FCE14B64-3BDC-4D95-BD3E-2C70931B13A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoePricing.Tests", "PoePricing.Tests\PoePricing.Tests.csproj", "{B5D29E07-6A90-41EC-A497-83E4932472C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFE52326-B360-4616-8618-EF57F5CB6E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE52326-B360-4616-8618-EF57F5CB6E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE52326-B360-4616-8618-EF57F5CB6E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE52326-B360-4616-8618-EF57F5CB6E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D29E07-6A90-41EC-A497-83E4932472C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D29E07-6A90-41EC-A497-83E4932472C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D29E07-6A90-41EC-A497-83E4932472C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D29E07-6A90-41EC-A497-83E4932472C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CFE52326-B360-4616-8618-EF57F5CB6E66} = {85AE915A-B50B-4F42-A30B-504128953155}
+		{B5D29E07-6A90-41EC-A497-83E4932472C5} = {FCE14B64-3BDC-4D95-BD3E-2C70931B13A4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7CA17177-D421-41D6-A0F7-120894330940}
+	EndGlobalSection
+EndGlobal
