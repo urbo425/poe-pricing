@@ -1,6 +1,11 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using PoePricing.PoeModels;
+using PoePricing.Services;
 
 namespace PoePricing.Stashes
 {
@@ -8,19 +13,41 @@ namespace PoePricing.Stashes
     {
         public class Request : IRequest<Response>
         {
+            public string AccountName { get; set; }
+
+            public string PoeSessionId { get; set; }
+
             public string TabIndex { get; set; }
         }
 
         public class Response
         {
-
+            [JsonPropertyName("items")]
+            public List<Item> Items { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            private readonly IPoeApiService _poeApiService;
+
+            public Handler(IPoeApiService poeApiService)
             {
-                throw new System.NotImplementedException();
+                _poeApiService = poeApiService;
+            }
+
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken = default)
+            {
+                try
+                {
+                    var responseMessage = await _poeApiService.GetStashTabItems(request);
+                    var content = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<Response>(content);
+                    return response;
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
     }

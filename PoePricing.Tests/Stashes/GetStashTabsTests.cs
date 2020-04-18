@@ -11,7 +11,7 @@ using PoePricing.Services;
 using PoePricing.Stashes;
 using Xunit;
 
-namespace PoePricing.Tests
+namespace PoePricing.Tests.Stashes
 {
     public class GetStashTabsTests
     {

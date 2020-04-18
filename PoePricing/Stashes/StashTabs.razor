@@ -39,23 +39,36 @@
             <DataAnnotationsValidator/>
 
             <p>
-                <MatSelect Label="Select A Stash Tab..." @bind-Value="tabIndex">
+                <MatSelect Label="Select A Stash Tab..." @bind-Value="_getStashTabItemsRequest.TabIndex">
                     <MatOptionString></MatOptionString>
                     @foreach (var tab in StashTabsResponse.Tabs)
                     {
                         <MatOptionString Value="@tab.Index.ToString()">@tab.Name</MatOptionString>
                     }
+                    /**/
                 </MatSelect>
             </p>
-            <MatButton Type="submit" Raised="true" Disabled="@string.IsNullOrEmpty(tabIndex)">Get Stash Items</MatButton>
+            <MatButton Type="submit" Raised="true" Disabled="@string.IsNullOrEmpty(_getStashTabItemsRequest.TabIndex)">Get Stash Items</MatButton>
         </EditForm>
     </div>
+}
+
+@if (StashTabItemsResponse != null)
+{
+    <MatList>
+        @foreach (var item in StashTabItemsResponse.Items)
+        {
+            <MatListItem>@item.Name</MatListItem>
+        }
+    </MatList>
 }
 
 @code {
     private bool LoadingStashes { get; set; }
 
     private GetStashTabs.Response StashTabsResponse { get; set; }
+
+    private GetStashTabItems.Response StashTabItemsResponse { get; set; }
 
     private readonly GetStashTabs.Request _getStashRequest = new GetStashTabs.Request();
 
@@ -82,6 +95,16 @@
 
     async void GetStashItems()
     {
+        try
+        {
+            _getStashTabItemsRequest.AccountName = _getStashRequest.AccountName;
+            _getStashTabItemsRequest.PoeSessionId = _getStashRequest.PoeSessionId;
+            StashTabItemsResponse = await Mediator.Send(_getStashTabItemsRequest);
+        }
+        catch
+        {
+        }
+        StateHasChanged();
     }
 
 }
